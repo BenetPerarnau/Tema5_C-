@@ -205,12 +205,6 @@ void trobarRepeticionsTemperatures(float t[], int l){
         
     }
     
-    getTemperaturaMaxMesRepetida(aux,DIES);
-    getTemperaturaMinMesRepetida(aux,DIES);
-    
-    
-}
-void getTemperaturaMaxMesRepetida(float aux[][], int l){
     float temp_max=0;
     int rep=0;
     int i=0;
@@ -224,11 +218,10 @@ void getTemperaturaMaxMesRepetida(float aux[][], int l){
     }while(temp_max==0 && i<l);
     
     cout <<"Temperatura màxima més repetida: "<<temp_max<<" nº repeticions: "<<rep<<endl;
-}
-void getTemperaturaMinMesRepetida(float aux[][], int l){
+
     float temp_min=0;
-    int rep=0;
-    int i=DIES-1;
+    rep=0;
+    i=DIES-1;
     do{
         
         if(aux[i][1]>aux[i-1][1]){
@@ -239,7 +232,9 @@ void getTemperaturaMinMesRepetida(float aux[][], int l){
     }while(temp_min==0 && i>=0);
     
     cout <<"Temperatura mínima més repetida: "<<temp_min<<" nº repeticions: "<<rep<<endl;
+    
 }
+
 void ex2(){
     float t[DIES];   
     generarTemperatures(t,DIES);
