@@ -23,7 +23,11 @@ void showMenu(){
     cout << "Ex 3 "<< endl;
     cout << "Ex 4 "<< endl;
     cout << "Ex 5 "<< endl;
-    
+    cout << "Ex 6 "<< endl;
+    cout << "Ex 7 "<< endl;
+    cout << "Ex 8 "<< endl;
+    cout << "Ex 9 "<< endl;
+    cout << "Ex 10 "<< endl;
     cout <<"Nº=> ";
 }
 /**
@@ -389,6 +393,7 @@ d) Sortir de l’algorisme.
 El menú s’ha de repetir fins que l’usuari seleccioni l’opció de sortir.
  */
 #define GRAU_MAX 4
+#include <string.h>
 void menu(){
     cout <<"1) Calcular i escriure per pantalla el valor numèric d’un polinomi P(z) , on z és un nº real introduït per l’usuari."<<endl;
     cout <<"2) Calcular i escriure per pantalla el polinomi primera derivada, Pʹ′(x), de P(x)"<<endl;
@@ -399,7 +404,19 @@ void menu(){
 
 void getCoeficients(int c[]){
     for(int i=0; i<GRAU_MAX; i++){
-        cout << "valor: ";
+        cout << "valor de ";
+        switch(i){
+            case 0:
+                cout <<"terme sense x => ";
+                break;
+            case 1:
+                cout <<"terme x => ";
+                break;
+            default:
+                cout <<"terme x^"<<i<<" => ";
+                break;
+        }
+        
         cin>>c[i];
     }
 }
@@ -407,11 +424,36 @@ void getCoeficients(int c[]){
 float getPz(int c[], int z){
     float res=0;
     res=c[0];
-    res+=c[1]*z;
-    res+=c[2]*pow(z,2);
-    res+=c[3]*pow(z,3);
+    for(int i=1; i<GRAU_MAX; i++){
+        res+=c[i]*pow(z,i);
+    }
     
     return res;
+}
+
+void getPrimeraDerivada(int c[]){
+    
+    string d="";
+    
+    d=std::to_string(c[1]);
+    
+    for(int i=2; i<GRAU_MAX; i++){
+        if(c[i]>0){
+            d+="+";
+        }
+        switch(i){
+            case 2:
+                d+=std::to_string(c[i]*i)+"X";
+                break;
+            default:
+                d+=std::to_string(c[i]*i)+"X^"+std::to_string(i-1);
+                break;
+        }
+        
+    }
+    
+    cout <<"P'(z)= "<<d<<endl;
+    
 }
 
 void ex4(){
@@ -438,11 +480,13 @@ mostrar un menú amb les següents opcions:
                 cout <<"Valor de z => ";
                 cin >> z;
                 res=getPz(coef,z);
-                cout <<"P(z)= "<<res<<endl;
+                cout <<"P(z="<<z<<")= "<<res<<endl;
                 break;
             case 2:
+                getPrimeraDerivada(coef);
                 break;
             case 3:
+                getCoeficients(coef);
                 break;
             case 4:
                 cout <<"Bye"<<endl;
@@ -452,6 +496,283 @@ mostrar un menú amb les següents opcions:
                 break;
         }
     }while(op!=4);
+}
+/**
+ *Exercici 5
+a) Escriure un algorisme que llegeixi i guardi N nombres enters per teclat (que poden
+estar en qualsevol ordre). Els ordeni i+ de més petit a més gran. Imprimir el resultat
+per pantalla.
+b) Suposant que tenim una taula amb N nombres enters ordenada tal com s’explica a
+l’apartat anterior, escriure un algorisme que demani un nombre enter i si està dins de
+la taula, l’elimini desplaçant la resta de valors que té a la dreta una posició cap a
+l’esquerra.
+ */
+#define N_NOMBRES 10
+void getN_Nombres(int n[]){
+    for(int i=0; i<N_NOMBRES; i++){
+        cout << "Nombre " << i+1 <<" => ";
+        cin >> n[i];
+    }
+}
+void ordenarAscendent(int n[]){
+    for(int i=0; i<N_NOMBRES; i++){
+        for(int j=0; j<N_NOMBRES-1; j++){
+            int aux;
+            if(n[j]>n[j+1]){
+                aux=n[j];
+                n[j]=n[j+1];
+                n[j+1]=aux;
+            }
+        }
+    }
+}
+void imprimirArray(int n[], int l){
+    for (int i=0; i<l-1; i++){
+        cout <<n[i]<<", ";
+    }
+    cout <<n[l-1]<<endl;
+}
+int buscarEliminar(int n[], int x){
+    
+    int i=0, eliminats=0;
+    while(i<N_NOMBRES){
+        
+        if(n[i]==x){
+            eliminats++;
+            for(int j=i; j<N_NOMBRES-1; j++){
+                n[j]=n[j+1];
+            }
+            i--;
+        }
+        i++;
+    }
+
+    return eliminats;
+}
+void ex5(){
+    int n[N_NOMBRES];
+    int x;
+    getN_Nombres(n);
+    ordenarAscendent(n);
+    imprimirArray(n,N_NOMBRES);
+    
+    cout <<"Valor a buscar i eliminar si està dins de la taula => ";
+    cin >> x;
+    
+    int eliminats;
+    eliminats=buscarEliminar(n,x);
+    if(eliminats!=0)cout << "El valor "<< x<<" s'ha trobat i s'ha eliminat de la taula."<<endl; 
+    else cout << "El valor "<< x<<" NO s'ha trobat i s'ha eliminat de la taula."<<endl; 
+    imprimirArray(n,N_NOMBRES-eliminats);
+}
+/**
+ *Exercici 6
+Donada una taula unidimensional de N elements diferents de 0, dissenyar un algorisme
+per eliminar els elements repetits de la taula. La taula resultant haurà de tenir 0 a les
+posicions ocupades inicialment pels elements repetits. La primera aparició de cada
+element repetit s’ha de mantenir a la taula final. Totes les operacions s’han de fer sobre
+la taula original. Feu dues versions diferents de l’algorisme:
+a) Suposant que els valors de la taula estan ordenats de més petit a més gran.
+b) Suposant que els valors de la taula no estan ordenats.  
+ */
+#define N 30
+void omplirArray(int n[], int l){
+    for(int i=0; i<l; i++){
+        n[i]=rand()%30+1;
+    }
+}
+void impArray(int n[], int l){
+    for(int i=0; i<l-1; i++){
+        if(n[i]<10)cout<< n[i]<<" , ";
+        else cout<< n[i]<<", ";
+    }
+    cout<<n[l-1]<<endl;
+}
+void replaceNombresRepetits(int n[], int l){
+
+    for(int i=0; i<l; i++){
+        
+        for(int j=i+1; j<l; j++){
+            if(n[i]==n[j]){
+                n[i]=0;
+                n[j]=0;
+            }
+        }
+    }
+}
+void ex6(){
+    int array[N];
+    omplirArray(array, N);
+    impArray(array,N);
+    replaceNombresRepetits(array,N);
+    impArray(array,N);
+}
+/*
+ Exercici 7
+Dissenyeu algorismes per:
+a) Sumar dues matrius.
+b) Multiplicar una matriu per un nombre real.
+c) Multiplicar dues matrius.
+d) Calcular la suma de cada fila d’una matriu.
+e) Calcular la suma de cada columna d’una matriu.
+f) Calcular la suma de tots els elements de la matriu.
+g) Permutar dues files de la matriu.
+h) Permutar dues columnes de la matriu.
+i) Transposar una matriu.
+j) Comprovar si dues matrius són idèntiques
+k) Multiplicar una matriu per un vector.
+l) Trobar l’element màxim de la matriu i escriure la posició que ocupa dins de la matriu.
+m) Comprovar si una matriu és simètrica.
+En cada cas, definiu amb constants el tamany fix que vulgueu per les matrius.
+ */
+#define F 3
+#define C 3
+void ops(){
+    cout << "a) Sumar dues matrius.\n"
+            "b) Multiplicar una matriu per un nombre real.\n"
+            "c) Multiplicar dues matrius.\n"
+            "d) Calcular la suma de cada fila d’una matriu.\n"
+            "e) Calcular la suma de cada columna d’una matriu.\n"
+            "f) Calcular la suma de tots els elements de la matriu.\n"
+            "g) Permutar dues files de la matriu.\n"
+            "h) Permutar dues columnes de la matriu.\n"
+            "i) Transposar una matriu.\n"
+            "j) Comprovar si dues matrius són idèntiques\n"
+            "k) Multiplicar una matriu per un vector.\n"
+            "l) Trobar l’element màxim de la matriu i escriure la posició que ocupa dins de la matriu.\n"
+            "m) Comprovar si una matriu és simètrica.\n"
+            "op => ";
+}
+void omplirMatriuRand(int m[][C]){
+    for(int i=0; i<F; i++){
+        for(int j=0; j<C; j++){
+            m[i][j]=rand()%11;
+        }
+    }
+}
+void omplirMatriu(int m[][C]){
+    for(int i=0; i<F; i++){
+        for(int j=0; j<C; j++){
+            cout<<"Valor f"<<i+1<<" columna "<<j+1<<"=> ";
+            cin >>m[i][j];
+        }
+    }
+}
+void imprimirMatriu(int m[][C]){
+        for(int i=0; i<F; i++){
+            cout<<"\t";
+            for(int j=0; j<C; j++){
+                cout <<m[i][j]<<"\t";
+            }
+            cout <<endl;
+        }
+}
+void sumarM(int m1[][C], int m2[][C], int sum[][C]){
+    for(int i=0; i<F; i++){
+        for(int j=0; j<C; j++){
+            sum[i][j]=m1[i][j]+m2[i][j];
+        }
+    }
+}
+void multiplicarMperEscalar(int m[][C],int mEscalar[][C], int k){
+    for(int i=0; i<F; i++){
+        for(int j=0; j<C; j++){
+            mEscalar[i][j]=m[i][j]*k;
+        }
+    }
+}
+void sumaValorsPerFila(int m[][C]){
+    int suma;
+        for(int i=0; i<F; i++){
+            suma=0;
+            for(int j=0; j<C; j++){
+                suma+=m[i][j];
+            }
+            cout <<"Suma F"<<i+1<<"= "<<suma<<endl;;
+    }
+}
+void sumaValorsPerColumna(int m[][C]){
+    int suma;
+        for(int i=0; i<C; i++){
+            suma=0;
+            for(int j=0; j<F; j++){
+                suma+=m[j][i];
+            }
+            cout <<"Suma C"<<i+1<<"= "<<suma<<endl;;
+    }
+}
+void multiplicar2Matrius(int m1[][C],int m2[][C], int p_m1m2[][C]){
+    
+    
+    for(int i=0; i<F; i++){
+        for(int j=0; j<C; j++){
+            //AKI
+        }
+    }
+    
+}
+void ex7(){
+    int m1[F][C];
+    int m2[F][C];
+    int suma[F][C];
+    int mEscalar[F][C];
+    int k;
+    int p_m1m2[F][C];
+    
+    char op;
+    
+    omplirMatriuRand(m1);
+    omplirMatriuRand(m2);
+    cout << "Matriu A: "<<endl;
+    imprimirMatriu(m1);
+    cout << "Matriu B: "<<endl;
+    imprimirMatriu(m2);
+    
+    ops();
+    cin >> op;
+    switch(op){
+        case 'a':
+            sumarM(m1,m2,suma);
+            cout <<"A + B :"<<endl;
+            imprimirMatriu(suma);
+            
+            break;
+        case 'b':
+            cout << "Valor de k per multiplicar la matriu => ";
+            cin >> k; 
+            multiplicarMperEscalar(m1,mEscalar,k);
+            cout <<" A * "<<k<<" :"<<endl;
+            imprimirMatriu(mEscalar);
+            break;
+        case 'c':// * dues matrius
+            break;
+        case 'd': //calcula suma de cada fila
+            cout <<"Suma de cada fila de A: "<<endl;
+            sumaValorsPerFila(m1);
+            break;
+        case 'e'://calcula suma de cada columna
+            cout <<"Suma de cada columna de A: "<<endl;
+            sumaValorsPerColumna(m1);
+            break;      
+        case 'f'://"f) Calcular la suma de tots els elements de la matriu.\n"
+            break;
+        case 'g'://"g) Permutar dues files de la matriu.\n"
+            break;
+        case 'h'://"h) Permutar dues columnes de la matriu.\n"
+            break;
+        case 'i'://"i) Transposar una matriu.\n"
+            break;
+        case 'j':
+            break;
+        case 'k':
+            break;
+        case 'l':
+            break;
+        case 'm':
+            break;            
+        default:
+            break;
+    }
 }
 int main() {
 
@@ -474,7 +795,30 @@ int main() {
                 break;
             case 4:
                 ex4();
-                break;               
+                break;
+            case 5:
+                ex5();
+                break;
+            case 6:
+                ex6();
+                break;
+            case 7:
+                ex7();
+                break;
+            case 8:
+                ex2();
+                break;
+            case 9:
+                ex3();
+                break;
+            case 10:
+                ex4();
+                break;
+            case 11:
+                ex5();
+                break;
+            case 12:
+                ex6();
             default:
                 cout <<"Exercici no trobat"<<endl;
                 break;
