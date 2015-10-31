@@ -667,6 +667,32 @@ void imprimirMatriu(int m[][C]){
             cout <<endl;
         }
 }
+void imprimirMatriu(int m1[][C], int m2[][C],int m3[][C], char s){
+        for(int i=0; i<F; i++){
+            cout<<"\t";
+            for(int j=0; j<C; j++){
+                cout <<m1[i][j]<<"\t";
+            }
+            if(i==F/2)cout<<s<<+"       ";
+            else cout<<"\t";
+            for(int j=0; j<C; j++){
+                cout <<m2[i][j]<<"\t";
+            }
+            if(i==F/2)cout<<+"=       ";
+            else cout<<"\t";
+            for(int j=0; j<C; j++){
+                cout <<m3[i][j]<<"\t";
+            }            
+            cout <<endl;
+        } 
+}
+void imprimirVector(int v[], int l){
+    cout <<"(";
+    for(int i=0; i<l-1; i++){
+        cout <<v[i]<<",";
+    }
+    cout <<v[l-1]<<")"<<endl;
+}
 void sumarM(int m1[][C], int m2[][C], int sum[][C]){
     for(int i=0; i<F; i++){
         for(int j=0; j<C; j++){
@@ -703,13 +729,111 @@ void sumaValorsPerColumna(int m[][C]){
 }
 void multiplicar2Matrius(int m1[][C],int m2[][C], int p_m1m2[][C]){
     
+    int sum=0;
+    int aux=0;
+    
+    for(int i=0; i<F; i++){
+       
+        for(int n=0; n<F; n++){
+            for(int j=0; j<C; j++){
+           
+                sum+=m1[i][j]*m2[j][n];
+            }
+        p_m1m2[i][n]=sum;
+        sum=0;        
+        }
+
+    }
+    
+}
+int sumatoriCoeficientsMatriu(int m[][C]){
+    int sum=0;
     
     for(int i=0; i<F; i++){
         for(int j=0; j<C; j++){
-            //AKI
+            sum+=m[i][j];
         }
     }
     
+    return sum;
+}
+void permutarDuesFiles(int m[][C], int p1, int p2){
+    int aux;
+        for(int j=0; j<C; j++){
+            aux=m[p1][j];
+            m[p1][j]=m[p2][j];
+            m[p2][j]=aux;
+        }  
+    
+}
+void permutarDuesColumnes(int m[][C], int p1, int p2){
+    int aux;
+        for(int j=0; j<F; j++){
+            aux=m[j][p1];
+            m[j][p1]=m[j][p2];
+            m[j][p2]=aux;
+        }     
+}
+void getTransposada(int m[][C]){
+    int aux;    
+    for(int i=0; i<F; i++){
+            for(int j=i+1; j<C; j++){
+                aux=m[i][j];
+                m[i][j]=m[j][i];
+                m[j][i]=aux;
+            }
+    }    
+}
+bool areEcuals(int m1[][C], int m2[][C]){
+    bool res=true;
+    int i=0,j=0;
+    
+    while(res==true && i<F){      
+        while(res==true && j<C){
+            if(m1[i][j]!=m2[i][j]){
+                res=false;
+            }
+            j++;
+        }
+        i++;
+    }
+    
+    return res;
+}
+void omplirVector(int v[], int l){
+    for(int i=0; i<l; i++){
+        cout <<"V"<<(i+1)<<" => ";
+        cin >> v[i];
+    }
+}
+void multiplicarVectorMatriu(int v[], int m[][C], int r[C]){
+    int sum=0;
+    for(int i=0; i<C; i++){
+        
+        for(int j=0; j<F; j++){
+            sum+=v[j]*m[j][i];
+        }
+        r[i]=sum;
+        sum=0;
+    }
+    
+    
+}
+int getElementMax(int m[][C]){
+    int max=m[0][0];
+    for(int i=0; i<F; i++){
+        for(int j=0; j<C; j++){
+            if(max<m[i][j])max=m[i][j];
+        }
+    }
+    return max;
+}
+void copyMatriu(int m[][C], int c[][C]){
+    for(int i=0; i<F; i++){
+        for(int j=0; j<C; j++){
+            c[i][j]=m[i][j];
+        }
+    }
 }
 void ex7(){
     int m1[F][C];
@@ -745,6 +869,8 @@ void ex7(){
             imprimirMatriu(mEscalar);
             break;
         case 'c':// * dues matrius
+            multiplicar2Matrius(m1,m2,p_m1m2);
+            imprimirMatriu(m1,m2,p_m1m2,'*');
             break;
         case 'd': //calcula suma de cada fila
             cout <<"Suma de cada fila de A: "<<endl;
@@ -755,28 +881,387 @@ void ex7(){
             sumaValorsPerColumna(m1);
             break;      
         case 'f'://"f) Calcular la suma de tots els elements de la matriu.\n"
+            imprimirMatriu(m1);
+            cout<<"Suma de tots els coeficients: "<<endl;
+            cout<<sumatoriCoeficientsMatriu(m1)<<endl;
             break;
         case 'g'://"g) Permutar dues files de la matriu.\n"
+            int f, f2;
+            cout<<"Matriu A:"<<endl;
+            imprimirMatriu(m1);
+            cout <<"Permutar Fila => ";
+            cin>>f;
+            cout <<"Amb Fila => ";
+            cin >> f2;
+            permutarDuesFiles(m1,f-1,f2-1);
+            cout <<"Nova matriu A:"<<endl;
+            imprimirMatriu(m1);          
             break;
         case 'h'://"h) Permutar dues columnes de la matriu.\n"
+            int c, c2;
+            cout<<"Matriu A:"<<endl;
+            imprimirMatriu(m1);
+            cout <<"Permutar Columna => ";
+            cin>>c;
+            cout <<"Amb Columna => ";
+            cin >> c2;
+            permutarDuesColumnes(m1,c-1,c2-1);
+            cout <<"Nova matriu A:"<<endl;
+            imprimirMatriu(m1);                
             break;
         case 'i'://"i) Transposar una matriu.\n"
+            cout <<"Matriu A:"<<endl;
+            imprimirMatriu(m1);
+            cout <<"Transposada:"<<endl;
+            getTransposada(m1);
+            imprimirMatriu(m1);
             break;
-        case 'j':
+        case 'j'://Comprovar si dues matrius són idèntiques\n"
+            cout <<"Matriu A:"<<endl;
+            imprimirMatriu(m1);
+            cout <<"Matriu B:"<<endl;
+            imprimirMatriu(m2);
+            cout <<"Són idèntiques ?"<<endl;
+            if(areEcuals(m1,m2))cout <<"SÍ"<<endl;
+            else cout<<"NO"<<endl;
             break;
-        case 'k':
+        case 'k'://"k) Multiplicar una matriu per un vector.\n"
+            int vector[C];
+            int vec_per_mat[C];
+            omplirVector(vector, C);
+            cout <<"Vector V:"<<endl;
+            imprimirVector(vector, C);
+            cout <<"Matriu A:"<<endl;
+            imprimirMatriu(m1);
+            cout <<"V*A ="<<endl;
+            multiplicarVectorMatriu(vector,m1,vec_per_mat);
+            imprimirVector(vec_per_mat,C);
             break;
-        case 'l':
+        case 'l'://"l) Trobar l’element màxim de la matriu i escriure la posició que ocupa dins de la matriu.\n"
+            int max;
+            cout <<"Matriu A:"<<endl;
+            imprimirMatriu(m1);
+            max=getElementMax(m1);
+            cout <<"El element màxim és: "<<max<<endl;
             break;
-        case 'm':
+        case 'm'://"m) Comprovar si una matriu és simètrica.\n"
+//A es también la matriz traspuesta de sí misma: A^t = A. 
+//Esta última igualdad es una definición alternativa de matriz simétrica.
+            int aux[F][C];
+            cout <<"Matriu A:"<<endl;
+            imprimirMatriu(m1);
+            copyMatriu(m1,aux);
+            getTransposada(aux);
+            cout <<"La Matriu ";
+            if(!areEcuals(m1,aux)){
+                cout <<"NO ";
+            }
+            cout <<"és simétrica"<<endl;
+            
             break;            
         default:
             break;
     }
 }
+/**
+ * Exercici 8
+Tenim dues matrius A i B de dimensions MxM i NxN respectivament, on M > N.
+Aquestes matrius només contenen 0’s i 1’s. Fer un algorisme que, donada una posició
+(x,y) de la matriu A, superposi la matriu B en aquesta posició i miri si hi ha alguna
+col·lisió entre les dues matrius, és a dir, si hi ha alguna casella de la matriu B que
+contingui un “1” que coincideixi amb alguna casella de la matriu A que també contingui
+un “1”.
+ */
+#define A_F 3
+#define A_C 3
+#define B_F 2
+#define B_C 2
+void imprimirMatriuA(int m[][A_C]){
+        for(int i=0; i<A_F; i++){
+            cout<<"\t";
+            for(int j=0; j<A_C; j++){
+                cout <<m[i][j]<<"\t";
+            }
+            cout <<endl;
+        }
+}
+void imprimirMatriuB(int m[][B_C]){
+        for(int i=0; i<B_F; i++){
+            cout<<"\t";
+            for(int j=0; j<B_C; j++){
+                cout <<m[i][j]<<"\t";
+            }
+            cout <<endl;
+        }
+}
+bool superposarMatriu(int m1[][A_C], int m2[][B_C], int x, int y){
+    int aux_f=0, aux_c=0;
+    bool coincideix=false;
+    
+    for(int i=x; i<A_F; i++){
+        
+        for(int j=y; j<A_C; j++){
+            if(m1[i][j]==m2[aux_f][aux_c]){ 
+                coincideix=true;
+            }     
+            if(aux_f<B_F && aux_c<B_C){
+                m1[i][j]=m2[aux_f][aux_c];
+                aux_c++;
+            }
+        }
+        if(aux_f<B_F){
+            aux_f++;
+            aux_c=0;
+        }
+    }
+    return coincideix;
+}
+void ex8(){
+    int a[A_F][A_C]={{1,1,0},{0,0,0},{1,0,0}};
+    int b[B_F][B_C]={{0,1},{1,0}};
+    
+    cout <<"Matriu A: "<<endl;
+    imprimirMatriuA(a);
+    cout <<"Matriu B: "<<endl;
+    imprimirMatriuB(b); 
+    
+    int x,y;
+    cout <<"Posició F de la matriu A on es vol introduir la matriu B => ";
+    cin>>x;
+    cout <<"Posició C de la matriu A on es vol introduir la matriu B => ";
+    cin >>y;
+    
+    x=x-1;
+    y=y-1;
+    
+    if(x+B_C>A_C|| y+B_F>A_F){
+        cout <<"No es pot superposar la matiu B dins de la matriu A en aquestes coordenades."<<endl;
+    }else{
+        cout <<"Resultat de superposar la matriu B dins de la matriu A en les cordenades ("<<x<<","<<y<<")"<<endl;
+        if(superposarMatriu(a,b,x,y)){
+            cout <<"S'ha trobat coincidències"<<endl;
+        }else{
+            cout <<"NO S'ha trobat coincidències"<<endl;
+        }
+        cout <<"Matriu superposada:"<<endl;
+        imprimirMatriuA(a);
+    }
+    
+}
+/**
+ * Exercici 9
+En el joc del Space Invaders, els búnkers protectors del canó es podran representar amb
+una taula bidimensional de tamany 3x3. El valor guardat a cada posició de la taula ens
+pot servir per codificar la forma actual del búnker. Per exemple, un 1 a una posició de la
+taula ens pot indicar que aquella part del búnker encara està activa, i un 0 ens pot indicar
+que ha estat destruïda per l’impacte d’un tret. A la figura següent il·lustrem aquesta
+equivalència entre els valors de la taula i la forma del búnker.
+
+Volem fer un algorisme que ens determini si un tret disparat per un alienígena impactarà
+o no amb un búnker. Al principi de l’algorisme s’haurà de demanar la posició a pantalla
+de la cantonada esquerra inferior del búnker, i la coordinada X del tret (la columna de la
+pantalla per la qual es desplaçarà el tret). S’haurà de determinar si la columna del tret
+coincideix amb alguna de les columnes que ocupa el búnker i si és així s’haurà de
+determinar si quan el tret arribi a l’alçada del búnker xocarà o no amb alguna de les
+seves posicions actives. En aquest cas, s’haurà de desactivar aquesta part del búnker a la
+taula que el representa. Al final de l’algorisme s’ha de mostrar per pantalla un missatge
+indicant si hi haurà col·lisió del tret amb el búnker o no. Podeu suposar que la matriu
+amb la forma inicial del búnker ja ha estat correctament inicialitzada.
+ */
+#define F_B 3
+#define C_B 3
+void ex9(){
+    int bunker[F_B][C_B]={{1,1,0},{1,1,1},{1,0,1}};
+    int c_x, c_y, t_x;
+    //Cordenada inferior esquerra    
+    cout <<"Coordenada inferior esquerra:"<<endl;
+    cout <<"Cordenada x => ";
+    cin >> c_x;
+    c_x=c_x-1;
+    cout <<"Cordenada y => ";
+    cin >> c_y;
+    c_y=c_y-1;
+    //Cordenada x del tret
+    cout <<"Cordenada x tret => ";
+    cin >> t_x;
+    t_x=t_x-1;
+    if((t_x<(c_x+C_B) && t_x>=c_x ) && bunker[c_y][t_x]==1){
+        //tocat
+        cout <<"Col·lisió!"<<endl;
+    }else{
+        cout <<"Has fallat!"<<endl;
+    }
+    
+}
+/**
+ * Exercici 10
+El joc del sudoku es pot representar amb una taula bidimensional 9x9 on guardem a
+cada casella un nº del 1 al 9 i si la casella està buida (encara no s’hi ha posat cap
+número) hi guardem un 0. Escriure un algorisme que, a partir d’una taula bidimensional
+que representa un joc del Sudoku, demani un nº i una posició del taulell on col·locar-lo i
+ens digui si és correcte posar-lo en aquella posició segons les regles del Sudoku:
+- La casella ha d’estar buida
+- No pot haver-hi cap altre nº igual a la mateixa fila o columna
+- No pot haver-hi cap altre nº igual a la submatriu 3x3 corresponent a la posició
+indicada.
+indicada.
+ */
+#define S_F 9
+#define S_C 9
+void iniciarTaulellSudoku(int t[][S_C]){
+    for(int i=0; i<S_F; i++){
+        for(int j=0; j<S_C; j++){
+            t[i][j]=0;
+        }
+    }
+}
+void mostrarTaulell(int t[][S_C]){
+    for(int i=0; i<S_F; i++){
+        if(i%3==0){
+            for(int l=0; l<3; l++){
+                cout <<"––––––––––––––";
+            }
+        }
+        cout<<endl;
+        /*for(int k=0; k<S_C; k++){
+            cout <<" -  ";
+        }
+        cout<<endl;*/
+        for(int j=0; j<S_C; j++){
+            if(j%3==0)cout<<"| ["<<t[i][j]<<"] ";
+            else cout<<"["<<t[i][j]<<"] ";
+            if(j==S_C-1){cout<<"|";}
+        }
+        cout<<endl;
+        
+    }
+    
+    /*for(int k=0; k<S_C; k++){
+        cout <<" -  ";
+    }
+    cout<<endl;*/
+    for(int l=0; l<3; l++){
+        cout <<"––––––––––––––";
+    }
+    cout<<endl;
+}
+bool isEmptyPos(int t[][S_C], int x, int y){
+    bool r=true;
+    if(t[y][x]!=0)r=false;
+    return r;
+}
+bool isUniqueInFila(int t[][S_C],int pos_fila ,int valor){
+    bool r=true;
+    for(int i=0; i<S_C; i++){
+        if(t[pos_fila][i]==valor){
+            r=false;
+        }
+    }
+    return r;
+}
+bool isUniqueInColumna(int t[][S_C],int pos_col ,int valor){
+    bool r=true;
+    for(int i=0; i<S_F; i++){
+        if(t[i][pos_col]==valor){
+            r=false;
+        }
+    }
+    return r;
+}
+void getIniciSubmatiu(int c, int f, int iniciSub[]){
+    if(c<3){
+        iniciSub[1]=0;
+    }else if(c<6){
+        iniciSub[1]=3;
+    }else{
+        iniciSub[1]=6;
+    }
+    if(f<3){
+        iniciSub[0]=0;
+    }else if(f<6){
+        iniciSub[0]=3;
+    }else{
+        iniciSub[0]=6;
+    }
+}
+bool isUniqueInSubmatriu(int t[][S_C], int c, int f, int valor){
+    int iniciSub[2]; // 0 => f  1=> c
+    bool unique=true;
+    
+    getIniciSubmatiu(c,f,iniciSub);
+    
+    for(int i=iniciSub[0]; i<3&&unique==true; i++){
+        for(int j=iniciSub[1]; j<3&&unique==true; j++){
+            if(t[i][j]==valor)unique=false;
+        }
+    }
+    
+    return unique;
+}
+void setValor(int t[][S_C], int y, int x, int valor){
+    t[y][x]=valor;
+}
+void ex10(){
+    int t[S_F][S_C];
+    int x, y;
+    int valor;
+    iniciarTaulellSudoku(t);
+    do{
+        cout<<"SUDOKU"<<endl;
+        mostrarTaulell(t);
+        cout<<"Pos x => ";
+        cin>>x;
+        x=x-1;
+        cout<<"Pos y => ";
+        cin>>y;
+        y=y-1;
+        while(x<0||x>S_C || y>=S_F || y<0 || !isEmptyPos(t,x,y)){
+            cout<<"ERROR: ";
+            if(x<0||x>S_C || y>=S_F || y<0){
+                cout<<"la coordenada esta fora de les dimensions del taulell."<<endl;
+            }else{               
+                cout<<"aquesta posició ja està ocupada."<<endl;
+            }
+            cout<<"Pos x => ";
+            cin>>x;
+            x=x-1;
+            cout<<"Pos y => ";
+            cin>>y;
+            y=y-1;
+        }
+        cout<< "Valor => ";
+        cin>>valor;
+        while(valor<1||valor>9){
+            cout<<"ERROR: valors del 1 al 9."<<endl;
+            cout<<"Valor => ";
+            cin>>valor;            
+        }
+        //aki sabem cordenada x,y tulell correcte amb un valor dins el rang 1-9
+        //saber si es el unic valor de la fila y columna
+        if(isUniqueInFila(t,y,valor)){
+           //el valor es unic en aquesta fila 
+            if(isUniqueInColumna(t,x,valor)){
+                //el valor es unic en aquesta columna
+                //saber si aquet valor es únic a la submatriu 3*3 a la que perteneix
+                if(isUniqueInSubmatriu(t,x,y,valor)){
+                    setValor(t,y,x,valor);
+                }else{
+                    cout<<"Error: el valor ja existeix dins de la submatriu 3*3"<<endl;            
+                }               
+            }else{
+                //error el valor ja existeix en aquesta columna
+                cout<<"Error: el valor ja existeix en aquesta columna"<<endl;
+            }
+        }else{
+            //error el valor ja existeix en aquesta fila
+            cout <<"Error: el valor ja existeix en aquesta fila"<<endl;
+        }
+        
+    }while(true);
+}
 int main() {
 
-    
+    srand(time(NULL));
     int op=-1;
     
     
@@ -806,19 +1291,19 @@ int main() {
                 ex7();
                 break;
             case 8:
-                ex2();
+                ex8();
                 break;
             case 9:
-                ex3();
+                ex9();
                 break;
             case 10:
-                ex4();
+                ex10();
                 break;
             case 11:
-                ex5();
+                //ex5();
                 break;
             case 12:
-                ex6();
+                //ex6();
             default:
                 cout <<"Exercici no trobat"<<endl;
                 break;
