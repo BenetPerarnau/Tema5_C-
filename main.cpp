@@ -6,8 +6,10 @@
  */
 
 #include <iostream>
+#include <stdio.h>
 #include <math.h>
-
+#include <string.h>
+#include <string>
 using namespace std;
 
 /*
@@ -28,6 +30,15 @@ void showMenu(){
     cout << "Ex 8 "<< endl;
     cout << "Ex 9 "<< endl;
     cout << "Ex 10 "<< endl;
+    cout << "Ex 11 "<< endl;
+    cout << "Ex 12 "<< endl;
+    cout << "Ex 13 "<< endl;
+    cout << "Ex 14 "<< endl;
+    cout << "Ex 15 "<< endl;
+    cout << "Ex 16 "<< endl;
+    cout << "Ex 17 "<< endl;
+    cout << "Ex 18 "<< endl;
+    cout << "Ex 19 "<< endl;    
     cout <<"Nº=> ";
 }
 /**
@@ -393,7 +404,6 @@ d) Sortir de l’algorisme.
 El menú s’ha de repetir fins que l’usuari seleccioni l’opció de sortir.
  */
 #define GRAU_MAX 4
-#include <string.h>
 void menu(){
     cout <<"1) Calcular i escriure per pantalla el valor numèric d’un polinomi P(z) , on z és un nº real introduït per l’usuari."<<endl;
     cout <<"2) Calcular i escriure per pantalla el polinomi primera derivada, Pʹ′(x), de P(x)"<<endl;
@@ -1123,10 +1133,6 @@ void mostrarTaulell(int t[][S_C]){
             }
         }
         cout<<endl;
-        /*for(int k=0; k<S_C; k++){
-            cout <<" -  ";
-        }
-        cout<<endl;*/
         for(int j=0; j<S_C; j++){
             if(j%3==0)cout<<"| ["<<t[i][j]<<"] ";
             else cout<<"["<<t[i][j]<<"] ";
@@ -1135,11 +1141,6 @@ void mostrarTaulell(int t[][S_C]){
         cout<<endl;
         
     }
-    
-    /*for(int k=0; k<S_C; k++){
-        cout <<" -  ";
-    }
-    cout<<endl;*/
     for(int l=0; l<3; l++){
         cout <<"––––––––––––––";
     }
@@ -1259,6 +1260,295 @@ void ex10(){
         
     }while(true);
 }
+/**
+ * Exercici 11
+Hi ha llenguatges de programació que no admeten la declaració de taules de més d’una
+dimensió. En aquests casos, és possible manipular taules de més d’una dimensió
+utilitzant taules unidimensionals i definint una correspondència entre els elements de la
+taula multidimensionals i els elements de la taula unidimensional. Dissenyeu un
+algorisme que:
+a) Declari taules unidimensionals per poder guardar els elements de taules
+bidimensionals de f files i c columnes.
+b) Llegeixi dues matrius, i les guardi utilitzant aquest sistema de representació de
+taules bidimensionals.
+c) Calculi la suma i la multiplicació de les dues matrius i escrigui el resultat en forma
+de matriu.
+ */
+void ex11(){
+}
+/**
+ * Exercici 12
+Seguint l’exemple de l’exercici anterior, busqueu models de representació el més
+eficient possibles (que ocupin el menor espai possible), utilitzant taules unidimensionals
+per als següents tipus de matrius bidimensionals. Per cada model, feu un algorisme que
+declari la corresponent taula unidimensional, llegeixi els valors de la matriu, i després,
+llegeixi un valor de fila i columna i escrigui el valor que hi ha guardat en aquella fila i
+columna.
+a) Matrius simètriques.
+b) Matrius quadrades diagonals: tots els elements fora de la diagonal principal són 0.
+c) Matrius triangulars inferiors: tots els elements per sobre de la diagonal principal són
+0.
+d) Matrius tridiagonals: matrius quadrades en què només són diferent de 0 els elements
+de la diagonal principal i les dues diagonals adjacents a ella.
+ */
+void ex12(){
+}
+/**
+ * Exercici 13
+Escriure un algorisme que llegeixi una cadena i la torni a escriure convertint totes les
+lletres minúscules en majúscules.
+ */
+void ex13(){
+    
+    string cadena;
+    cout<<"Cadena => ";
+    cin>>cadena;
+    
+    int i=0;
+    char c;
+    cout<<"CADENA:"<<endl;
+    while(cadena[i]!='\0'){
+        c=cadena[i];
+        putchar (toupper(c));
+        i++;
+    }
+    cout<<endl;
+
+}
+/**
+ * Exercici 14
+Escriure un algorisme que llegeixi en una cadena un nombre enter i converteixi la
+cadena al nombre enter corresponent.
+ */
+void ex14(){
+    int nombre;
+    char l;
+    cout <<"Cadena => ";
+    cin>>l;
+    nombre=int(l);
+    cout<<"Nº => "<<nombre<<endl;
+}
+/**
+ * Exercici 15
+Escriure un algorisme que digui si una cadena és un palíndrom, és a dir, si es llegeix
+igual de dreta a esquerra que d’esquerra a dreta.
+ */
+void ex15(){
+    string c1="Hola";
+    string c2="aaagaaa";
+    int i=0, j=c1.length()-1;
+    bool polindroma=true;
+    
+    while(polindroma && i<j){
+        if(c1[i]!=c1[j]){
+            polindroma=false;
+        }
+        i++;
+        j--;
+    }
+    cout<<"LA cadena "<<c1<<" ";
+    if(polindroma){
+        cout<<"SÍ";
+    }else{
+        cout<<"NO";
+    }
+    cout <<" és polindroma"<<endl;
+    polindroma=true;
+    i=0;
+    j=c2.length()-1;
+    while(polindroma && i<j){
+        if(c2[i]!=c2[j]){
+            polindroma=false;
+        }
+        i++;
+        j--;
+    }
+    cout<<"LA cadena "<<c2<<" ";
+    if(polindroma){
+        cout<<"SÍ";
+    }else{
+        cout<<"NO";
+    }
+    cout <<" és polindroma"<<endl;    
+}
+/**
+ *Exercici 16
+Escriure un algorisme que llegeixi una cadena i digui quantes paraules conté.
+Considereu que una paraula és qualsevol text separat per espais. Tingueu en compte que
+les paraules poden estar separades per més d’un espai. 
+ */
+void ex16(){//AKI
+    string cadena;
+    int paraules=1;
+    
+    cout <<"Cadena => ";
+    std::getline(std::cin, cadena);
+    
+    for(int i=0; i<cadena.length(); i++){
+        if(cadena[i]==' ' && cadena[i+1]!=' '){
+            paraules++;
+        }
+    }
+    
+    cout<<"La cadena "<<cadena<<" té "<<paraules<<" paraules"<<endl;
+}
+/**
+ * Exercici 17
+Dissenyeu els següents algorismes que treballen amb una cadena s que introdueix
+l’usuari:
+a) Esquerra: llegeix un nº n i escriu la cadena formada pels n primers caràcters de la
+cadena s.
+b) Dreta : llegeix un nº n i escriu la cadena formada pels n darrers caràcters de la
+cadena s.
+c) Subcadena: llegeix dos nºs n i m i escriu la cadena formada per m caràcters de la
+cadena original s, a partir d’una posició determinada n.
+d) Inserir: llegeix un nº n i una cadena t i escriu la cadena formada pel resultat
+d’iinserir la cadena t a la cadena s, a partir de la posició n.
+e) Elininar: llegeix dos nºs n i m i escriu
+ */
+void ex17(){
+}
+/**
+ *Exercici 18
+Definiu una estructura de dades per representar nombres complexos. Dissenyeu un
+algorisme que simuli una calculadora de nombres complexos, que permeti sumar, restar
+i multiplicar dos nombres complexos i calcular el conjugat d’un nombre complex.
+L’algorisme ha de presentar un menú amb totes les opcions possibles i efectuar
+l’operació seleccionada. S’ha de permetre que 
+ */
+struct complex{
+    float real;
+    float imaginari;
+};
+void menu18(){
+    cout  <<"1) Sumar\n"
+            "2) Restar\n"
+            "3) Multiplicar\n"
+            "4) Conjugat\n"
+            "5) Sortir\n"
+            "Op => ";
+}
+void getValorComplex(complex &n){
+    cout <<"Part real => ";
+    cin>>n.real;
+    while(n.real==0){
+        cout <<"ERROR: indica un valor vàlid, diferent de 0"<<endl;
+        cout <<"Part real => ";
+        cin>>n.real;
+    }
+    cout <<"Part imaginaria => ";
+    cin>>n.imaginari;
+    while(n.imaginari==0){
+        cout <<"ERROR: indica un valor vàlid, diferent de 0"<<endl;
+        cout <<"Part imaginaria => ";
+        cin>>n.imaginari;
+    }
+}
+void imprimirComplex(complex n){
+    if(n.real!=0){
+        cout <<n.real;
+    }
+    if(n.imaginari>0){
+        if(n.imaginari>1)cout<<"+"<<n.imaginari<<"i";
+        else cout<<"+"<<"i";
+    }else if(n.imaginari<0){
+        if(n.imaginari<1)cout<<n.imaginari<<"i";
+        else cout<<"-i";
+    }
+    cout<<endl;
+}
+void sumaComplex(complex &n, complex &n2, complex &s){
+    s.imaginari=n.imaginari+n2.imaginari;
+    s.real=n.real+n2.real;
+}
+void restaComplex(complex &n, complex &n2, complex &r){
+    r.imaginari=n.imaginari-n2.imaginari;
+    r.real=n.real-n2.real;
+}
+void multiplicarComplex(complex &n, complex &n2, complex &m){
+    //(a + bi) · (c + di) = (ac − bd) + (ad + bc)i
+    
+        //part real
+        m.real=(n.real*n2.real)-(n.imaginari*n2.imaginari);
+        //part imaginaria
+        m.imaginari=n.real*n2.imaginari+n.imaginari*n2.real;   
+}
+void getConjugat(complex &n, complex &c){
+    
+    c.real=n.real;
+    c.imaginari=n.imaginari*-1;
+
+}
+void ex18(){
+
+    int op=-1;
+
+    do{
+        menu18();
+        cin >>op;
+        switch(op){
+            case 1://Suma
+                complex n,n2,s;
+                cout <<"Introdueix n complex A:"<<endl;
+                getValorComplex(n);
+                cout <<"Introdueix n complex B:"<<endl;
+                getValorComplex(n2);
+                cout <<"A:"<<endl;
+                imprimirComplex(n);                
+                cout <<"B:"<<endl;
+                imprimirComplex(n2);
+                sumaComplex(n,n2,s);
+                cout<<"A+B = ";
+                imprimirComplex(s);
+                break;
+            case 2://Resta
+                complex r;
+                cout <<"Introdueix n complex A:"<<endl;
+                getValorComplex(n);
+                cout <<"Introdueix n complex B:"<<endl;
+                getValorComplex(n2);
+                cout <<"A:"<<endl;
+                imprimirComplex(n);                
+                cout <<"B:"<<endl;
+                imprimirComplex(n2);
+                restaComplex(n,n2,r);
+                cout<<"A-B = ";
+                imprimirComplex(r);
+                break;
+            case 3://Multiplicar
+                complex m;
+                cout <<"Introdueix n complex A:"<<endl;
+                getValorComplex(n);
+                cout <<"Introdueix n complex B:"<<endl;
+                getValorComplex(n2);
+                cout <<"A:"<<endl;
+                imprimirComplex(n);                
+                cout <<"B:"<<endl;
+                imprimirComplex(n2);
+                multiplicarComplex(n,n2,m);
+                cout<<"A*B = ";
+                imprimirComplex(m);
+                break;
+            case 4://Conjugat
+                complex c;
+                cout <<"Introdueix n complex A:"<<endl;
+                getValorComplex(n);
+                cout <<"A:"<<endl;
+                imprimirComplex(n);
+                getConjugat(n,c);
+                cout <<"CONJUGAT A:"<<endl;
+                imprimirComplex(c);
+                break;
+            case 5://Sortir
+                cout <<"Bye."<<endl;
+                break;
+            default:
+                cout <<"Operació no vàlida."<<endl;
+                break;
+        }
+    }while(op!=5);
+    
+}
 int main() {
 
     srand(time(NULL));
@@ -1299,11 +1589,28 @@ int main() {
             case 10:
                 ex10();
                 break;
-            case 11:
-                //ex5();
+            case 11:                
                 break;
             case 12:
-                //ex6();
+                break;
+            case 13: 
+                ex13();
+                break;
+            case 14:
+                ex14();
+                break;
+            case 15: 
+                ex15();
+                break;
+            case 16:
+                ex16();
+                break;
+            case 17:   
+                ex17();
+                break;                
+            case 18:
+                ex18();
+                break;
             default:
                 cout <<"Exercici no trobat"<<endl;
                 break;
